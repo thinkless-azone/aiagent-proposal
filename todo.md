@@ -1,0 +1,12 @@
+- [ ] Update `useEquipmentPricing.ts`:
+    - [ ] Rename "ОС Альт Линукс" to "ОС Альт СП / 4305 / Лицензия на право использования Альт СП Сервер релиз 10 / бессрочная / ФСТЭК / kit / без права использования виртуализации / арх.64 бит" and set price to 48,600 RUB.
+    - [ ] Update "Коммутатор Eltex MES2300-24" price to 186,550 RUB.
+    - [ ] Rename "СУБД Postgres Pro" to "Лицензия СУБД Postgres Pro Certified на 1 ядро x86-64 (зарегистрировано в ЕДИНОМ РЕЕСТРЕ российских программ для ЭВМ и БД под рег. № 104)" and set price to 238,781 RUB.
+    - [ ] Rename "Альт Виртуализация" to "Альт Виртуализация / 6487 / Лицензия на право использования Альт Виртуализация 11 редакция PVE / бессрочная / арх.x86_64" and set price to 101,200 RUB.
+- [ ] Update `Calculator.tsx`:
+    - [ ] Set quantity for Postgres Pro to 4 (Total: 955,124 RUB).
+    - [ ] Set quantity for Alt Virtualization to 3 (Total: 303,600 RUB).
+    - [ ] Ensure correct names are displayed in the list.
+- [ ] Update `Specs.tsx`:
+    - [ ] Reflect new names, prices, and quantities in the specifications table.
+- [ ] Verify PDF generation uses updated names and totals.
