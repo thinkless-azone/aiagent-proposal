@@ -22,15 +22,15 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: cd client && npm install --legacy-peer-deps
         
       - name: Build
-        run: npm run build
+        run: cd client && npm run build
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./client/dist
 
   deploy:
     needs: build
