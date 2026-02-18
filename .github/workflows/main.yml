@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist   # сюда Vite кладёт index.html и assets
+          path: ./client/dist   # сюда Vite кладёт index.html и assets
 
   deploy:
     runs-on: ubuntu-latest
