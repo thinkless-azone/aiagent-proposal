@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Router } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { VariantProvider } from "./contexts/VariantContext";
@@ -14,7 +14,7 @@ import Calculator from "@/pages/Calculator";
 import Roadmap from "./pages/Roadmap";
 import Risks from "./pages/Risks";
 
-function Router() {
+function AppRouter() {
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -37,8 +37,10 @@ function App() {
       <ThemeProvider defaultTheme="dark">
         <VariantProvider>
           <TooltipProvider>
-          <Toaster />
-<Router />
+            <Toaster />
+            <Router base="/aiagent-proposal">
+              <AppRouter />
+            </Router>
           </TooltipProvider>
         </VariantProvider>
       </ThemeProvider>
