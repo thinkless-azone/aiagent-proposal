@@ -24,6 +24,20 @@ const formatCurrency = (value: number) => {
 };
 
 export const generateDocxProposal = async (data: ProposalData) => {
+  // Function to generate table rows dynamically based on input data
+  const generateTableRows = (items: ProposalItem[]) => {
+    return items.map((item) => 
+      new TableRow({
+        children: [
+          new TableCell({ children: [new Paragraph(item.name)] }),
+          new TableCell({ children: [new Paragraph({ text: item.qty.toString(), alignment: AlignmentType.CENTER })] }),
+          new TableCell({ children: [new Paragraph({ text: formatCurrency(item.price), alignment: AlignmentType.RIGHT })] }),
+          new TableCell({ children: [new Paragraph({ text: formatCurrency(item.price * item.qty), alignment: AlignmentType.RIGHT })] }),
+        ],
+      })
+    );
+  };
+
   const tableRows = [
     new TableRow({
       children: [
@@ -49,16 +63,7 @@ export const generateDocxProposal = async (data: ProposalData) => {
         }),
       ],
     }),
-    ...data.items.map((item) => 
-      new TableRow({
-        children: [
-          new TableCell({ children: [new Paragraph(item.name)] }),
-          new TableCell({ children: [new Paragraph({ text: item.qty.toString(), alignment: AlignmentType.CENTER })] }),
-          new TableCell({ children: [new Paragraph({ text: formatCurrency(item.price), alignment: AlignmentType.RIGHT })] }),
-          new TableCell({ children: [new Paragraph({ text: formatCurrency(item.price * item.qty), alignment: AlignmentType.RIGHT })] }),
-        ],
-      })
-    ),
+    ...generateTableRows(data.items),
     new TableRow({
       children: [
         new TableCell({

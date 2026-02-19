@@ -12,10 +12,10 @@ export interface EquipmentPrice {
 
 // Mock initial data based on proposal
 const INITIAL_PRICES: Record<string, number> = {
-  'graviton-h22i': 5000000,
+  'graviton-h22i': 9122600,
   'das-storage': 900000,
   'eltex-mes2300-24': 186550,
-  'yadro-g4208p': 32151159, // Per unit price
+  'yadro-g4208p': 18390000, // Per unit price
   'aerodisk-storage': 9800000,
   'eltex-mes5324': 499000, // Per unit price
   // Software licenses

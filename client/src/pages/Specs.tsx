@@ -244,7 +244,7 @@ export default function Specs() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Badge variant="outline">Сервер</Badge>
-                    Гравитон H22И
+                    Гравитон С2122ИУ
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -252,10 +252,10 @@ export default function Specs() {
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-2 text-sm">
                         <span className="text-muted-foreground">Процессор:</span>
-                        <span className="font-medium">2x Intel Xeon Silver 4314 (16 ядер, 2.4 ГГц)</span>
+                        <span className="font-medium">2 × Intel Xeon Scalable (LGA 4677)</span>
                         
                         <span className="text-muted-foreground">ОЗУ:</span>
-                        <span className="font-medium">128 ГБ DDR4 ECC Reg</span>
+                        <span className="font-medium">128 GB DDR5</span>
                         
                         <span className="text-muted-foreground">Диски (ОС):</span>
                         <span className="font-medium">2x 480GB SSD SATA (RAID 1)</span>
@@ -278,7 +278,7 @@ export default function Specs() {
                         <ul className="list-disc list-inside space-y-1">
                           <li>Оптимальное соотношение цена/производительность</li>
                           <li>Включен в реестр Минпромторга РФ</li>
-                          <li>Поддержка базовых задач инференса ИИ</li>
+                          <li>Поддержка базовых задач инференса ИИ (NVIDIA A100)</li>
                         </ul>
                       </div>
                     </div>
