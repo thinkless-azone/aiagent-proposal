@@ -90,80 +90,80 @@ export default function Roadmap() {
     }));
   };
 
-  const renderPhases = (phases: typeof basicPhases) => (
-    <div className="relative border-l-2 border-border ml-4 md:ml-8 space-y-12 py-4">
-      {phases.map((phase) => {
-        const isExpanded = expandedPhases[phase.id];
-        return (
-          <div key={phase.id} className="relative pl-8 md:pl-12">
-            {/* Timeline Node */}
-            <div className={`absolute -left-[9px] top-0 w-4 h-4 bg-background border-2 ${isExpanded ? 'border-primary' : 'border-muted-foreground'} rounded-full z-10 transition-colors duration-300`}>
-              <div className={`w-2 h-2 bg-primary rounded-full m-0.5 transition-opacity duration-300 ${isExpanded ? 'opacity-100' : 'opacity-0'}`} />
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-6 md:items-start">
-              <div className="md:w-32 shrink-0">
-                <div className="text-4xl font-bold text-muted-foreground/20 font-mono leading-none">{phase.id}</div>
-                <div className="flex flex-col gap-2 mt-2">
-                  <Badge variant="outline" className="rounded-none border-primary/50 text-primary font-mono text-xs w-fit">
-                    {phase.duration}
-                  </Badge>
-                  <Badge variant="secondary" className="rounded-none font-mono text-xs w-fit">
-                    {phase.cost}
-                  </Badge>
-                </div>
-              </div>
-
-              <Card 
-                className={`flex-1 border bg-card transition-all duration-300 cursor-pointer ${isExpanded ? 'border-primary shadow-lg' : 'border-border hover:border-primary/50'}`}
-                onClick={() => togglePhase(phase.id)}
-              >
-                <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
-                  <CardTitle className="text-xl font-bold uppercase">{phase.title}</CardTitle>
-                  <div className="text-muted-foreground">
-                    {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                  </div>
-                </CardHeader>
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <CardContent>
-                        <ul className="space-y-3 pt-2">
-                          {phase.tasks.map((task, idx) => (
-                            <motion.li 
-                              key={idx} 
-                              initial={{ x: -10, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{ delay: idx * 0.1 }}
-                              className="flex items-start gap-3 text-sm text-muted-foreground"
-                            >
-                              <div className="w-1.5 h-1.5 bg-primary mt-1.5 rounded-none shrink-0" />
-                              {task}
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                {!isExpanded && (
-                   <div className="px-6 pb-4 text-xs text-muted-foreground uppercase tracking-wider font-bold opacity-60">
-                     Нажмите, чтобы увидеть задачи
-                   </div>
-                )}
-              </Card>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+	  const renderPhases = (phases: typeof basicPhases) => (
+	    <div className="relative border-l-2 border-border ml-4 md:ml-8 space-y-12 py-4">
+	      {phases.map((phase) => {
+	        const isExpanded = expandedPhases[phase.id];
+	        return (
+	          <div key={phase.id} className="relative pl-8 md:pl-12">
+	            {/* Timeline Node */}
+	            <div className={`absolute -left-[9px] top-0 w-4 h-4 bg-background border-2 ${isExpanded ? 'border-primary' : 'border-muted-foreground'} rounded-full z-10 transition-colors duration-300`}>
+	              <div className={`w-2 h-2 bg-primary rounded-full m-0.5 transition-opacity duration-300 ${isExpanded ? 'opacity-100' : 'opacity-0'}`} />
+	            </div>
+	
+	            <div className="flex flex-col md:flex-row gap-6 md:items-start">
+	              <div className="md:w-32 shrink-0">
+	                <div className="text-4xl font-bold text-muted-foreground/20 font-mono leading-none">{phase.id}</div>
+	                <div className="flex flex-col gap-2 mt-2">
+	                  <Badge variant="outline" className="rounded-none border-primary/50 text-primary font-mono text-xs w-fit">
+	                    {phase.duration}
+	                  </Badge>
+	                  <Badge variant="secondary" className="rounded-none font-mono text-xs w-fit">
+	                    {phase.cost}
+	                  </Badge>
+	                </div>
+	              </div>
+	
+	              <Card 
+	                className={`flex-1 border bg-card transition-all duration-300 cursor-pointer ${isExpanded ? 'border-primary shadow-lg' : 'border-border hover:border-primary/50'}`}
+	                onClick={() => togglePhase(phase.id)}
+	              >
+	                <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
+	                  <CardTitle className="text-xl font-bold uppercase">{phase.title}</CardTitle>
+	                  <div className="text-muted-foreground">
+	                    {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+	                  </div>
+	                </CardHeader>
+	                <AnimatePresence>
+	                  {isExpanded && (
+	                    <motion.div
+	                      initial={{ height: 0, opacity: 0 }}
+	                      animate={{ height: "auto", opacity: 1 }}
+	                      exit={{ height: 0, opacity: 0 }}
+	                      transition={{ duration: 0.3 }}
+	                      className="overflow-hidden"
+	                    >
+	                      <CardContent>
+	                        <ul className="space-y-3 pt-2">
+	                          {phase.tasks.map((task, idx) => (
+	                            <motion.li 
+	                              key={`${phase.id}-task-${idx}`} 
+	                              initial={{ x: -10, opacity: 0 }}
+	                              animate={{ x: 0, opacity: 1 }}
+	                              transition={{ delay: idx * 0.1 }}
+	                              className="flex items-start gap-3 text-sm text-muted-foreground"
+	                            >
+	                              <div className="w-1.5 h-1.5 bg-primary mt-1.5 rounded-none shrink-0" />
+	                              {task}
+	                            </motion.li>
+	                          ))}
+	                        </ul>
+	                      </CardContent>
+	                    </motion.div>
+	                  )}
+	                </AnimatePresence>
+	                {!isExpanded && (
+	                   <div className="px-6 pb-4 text-xs text-muted-foreground uppercase tracking-wider font-bold opacity-60">
+	                     Нажмите, чтобы увидеть задачи
+	                   </div>
+	                )}
+	              </Card>
+	            </div>
+	          </div>
+	        );
+	      })}
+	    </div>
+	  );
 
   return (
     <Layout>
