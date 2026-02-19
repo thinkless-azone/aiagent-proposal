@@ -13,6 +13,7 @@ interface ProposalItem {
   name: string;
   qty: number;
   category: 'hardware' | 'software' | 'implementation';
+  fixedPrice?: number;
 }
 
 const optimalItems: ProposalItem[] = [
@@ -23,9 +24,12 @@ const optimalItems: ProposalItem[] = [
   { id: 'alt-virtualization', name: 'Альт Виртуализация / 6487 / Лицензия на право использования Альт Виртуализация 11 редакция PVE', qty: 3, category: 'software' },
   { id: 'ml-platform', name: 'ML Платформа', qty: 1, category: 'software' },
   { id: 'data-connectors', name: 'Коннекторы данных', qty: 1, category: 'software' },
-  { id: 'impl-optimal-phase-1', name: 'Этап 1: Развертывание и настройка', qty: 1, category: 'implementation' },
-  { id: 'impl-optimal-phase-2', name: 'Этап 2: Обучение моделей', qty: 1, category: 'implementation' },
-  { id: 'impl-optimal-phase-3', name: 'Этап 3: Интеграция и запуск', qty: 1, category: 'implementation' },
+  { id: 'ai-module-ocr', name: 'Модуль: Документооборот (OCR)', qty: 1, category: 'software', fixedPrice: 500000 },
+  { id: 'ai-module-estimates', name: 'Модуль: Сметы и Закупки', qty: 1, category: 'software', fixedPrice: 750000 },
+  { id: 'ai-module-video', name: 'Модуль: Видеоаналитика', qty: 1, category: 'software', fixedPrice: 1200000 },
+  { id: 'impl-optimal-phase-1', name: 'Внедрение: Этап 1 (Анализ)', qty: 1, category: 'implementation' },
+  { id: 'impl-optimal-phase-2', name: 'Внедрение: Этап 2 (Развертывание)', qty: 1, category: 'implementation' },
+  { id: 'impl-optimal-phase-3', name: 'Внедрение: Этап 3 (Запуск)', qty: 1, category: 'implementation' },
 ];
 
 export function ProposalConfigDialog() {
@@ -44,7 +48,7 @@ export function ProposalConfigDialog() {
     
     const items = itemsToInclude.map(item => ({
       ...item,
-      price: prices[item.id]?.currentPrice || 0,
+      price: item.fixedPrice || (prices[item.id]?.currentPrice || 0),
       category: item.category
     }));
 
@@ -62,7 +66,7 @@ export function ProposalConfigDialog() {
   const calculateTotal = () => {
     const total = optimalItems
       .filter(item => selectedItems.includes(item.id))
-      .reduce((sum, item) => sum + ((prices[item.id]?.currentPrice || 0) * item.qty), 0);
+      .reduce((sum, item) => sum + ((item.fixedPrice || prices[item.id]?.currentPrice || 0) * item.qty), 0);
     return total;
   };
 
