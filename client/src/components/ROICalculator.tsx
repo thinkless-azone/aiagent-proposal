@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calculator, TrendingUp, DollarSign, Clock, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
+import { generateProposal } from "@/lib/generateProposal";
 
 export function ROICalculator() {
   // State for input values
@@ -79,6 +80,25 @@ export function ROICalculator() {
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(value);
+  };
+
+  const handleDownloadRoiReport = async () => {
+    const investment = selectedVariant === "basic" ? BASIC_COST : OPTIMAL_COST;
+
+    await generateProposal({
+      variant: selectedVariant,
+      title: 'Отчет ROI',
+      subtitle: 'Экономическая эффективность внедрения ИИ-агента',
+      fileName: `roi_report_${selectedVariant}.pdf`,
+      totalPrice: annualSavings,
+      items: [
+        { id: 'monthly-doc-volume', name: 'Объем документов в месяц', qty: docVolume, price: 1, category: 'implementation' },
+        { id: 'annual-savings', name: 'Прогнозируемая ежегодная экономия', qty: 1, price: annualSavings, category: 'implementation' },
+        { id: 'investment', name: 'Инвестиции во внедрение', qty: 1, price: investment, category: 'implementation' },
+        { id: 'payback', name: `Срок окупаемости: ${paybackPeriod} мес.`, qty: 1, price: 0, category: 'implementation' },
+        { id: 'roi-3y', name: `ROI за 3 года: ${roi}%`, qty: 1, price: 0, category: 'implementation' },
+      ]
+    });
   };
 
   return (
@@ -205,7 +225,7 @@ export function ROICalculator() {
               </div>
             </div>
             
-            <Button className="w-full font-bold" size="lg">
+            <Button className="w-full font-bold" size="lg" onClick={handleDownloadRoiReport}>
               Скачать детальный отчет (PDF)
             </Button>
           </div>
