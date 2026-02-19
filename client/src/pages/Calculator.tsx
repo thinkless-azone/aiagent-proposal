@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function Calculator() {
   const { prices, formatPrice } = useEquipmentPricing();
   const { selectedVariant, setSelectedVariant } = useVariant();
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState<'basic' | 'optimal' | null>(null);
 
   // State for selected items in the calculator
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>({
@@ -50,7 +51,7 @@ export default function Calculator() {
     }));
   };
 
-  const handleDownloadProposal = (variant: 'basic' | 'optimal') => {
+  const handleDownloadProposal = async (variant: 'basic' | 'optimal') => {
     const items: any[] = [];
     let totalPrice = 0;
 
@@ -101,8 +102,13 @@ export default function Calculator() {
       });
     }
 
-    // @ts-ignore
-    generateProposal({ variant, items, totalPrice });
+    setIsGeneratingPdf(variant);
+    try {
+      // @ts-ignore
+      await generateProposal({ variant, items, totalPrice });
+    } finally {
+      setIsGeneratingPdf(null);
+    }
   };
 
   // Helper to get price display with trend indicator
@@ -185,9 +191,9 @@ export default function Calculator() {
               <div className="text-sm text-muted-foreground mb-4">
                 Минимальная конфигурация для пилотного запуска.
               </div>
-              <Button variant="outline" className="w-full font-bold" onClick={() => handleDownloadProposal('basic')}>
+              <Button variant="outline" className="w-full font-bold" onClick={() => handleDownloadProposal('basic')} disabled={isGeneratingPdf !== null}>
                 <FileText className="w-4 h-4 mr-2" />
-                Скачать смету (PDF)
+                {isGeneratingPdf === 'basic' ? 'Формируем PDF...' : 'Скачать смету (PDF)'}
               </Button>
             </CardContent>
           </Card>
@@ -220,9 +226,9 @@ export default function Calculator() {
               <div className="text-sm text-muted-foreground mb-4">
                 Полный комплект оборудования и ПО для высоконагруженной системы.
               </div>
-              <Button className="w-full font-bold" onClick={() => handleDownloadProposal('optimal')}>
+              <Button className="w-full font-bold" onClick={() => handleDownloadProposal('optimal')} disabled={isGeneratingPdf !== null}>
                 <FileText className="w-4 h-4 mr-2" />
-                Скачать смету (PDF)
+                {isGeneratingPdf === 'optimal' ? 'Формируем PDF...' : 'Скачать смету (PDF)'}
               </Button>
             </CardContent>
           </Card>

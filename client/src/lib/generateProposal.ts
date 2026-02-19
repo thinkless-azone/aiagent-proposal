@@ -16,6 +16,9 @@ interface ProposalData {
   variant: 'basic' | 'optimal' | 'budget' | 'custom';
   items: ProposalItem[];
   totalPrice: number;
+  title?: string;
+  subtitle?: string;
+  fileName?: string;
 }
 
 // Helper to convert ArrayBuffer to Base64
@@ -40,26 +43,36 @@ const formatCurrency = (value: number) => {
 
 export const generateProposal = async (data: ProposalData) => {
   const doc = new jsPDF();
-  
-  // Load custom font
-  const fontResponse = await fetch('/Roboto-Regular.ttf');
-  const fontBuffer = await fontResponse.arrayBuffer();
-  const fontBase64 = arrayBufferToBase64(fontBuffer);
-  
-  doc.addFileToVFS('Roboto-Regular.ttf', fontBase64);
-  doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
-  doc.setFont('Roboto');
+
+  // Load custom font (fallback to default font when unavailable)
+  const fontUrl = `${import.meta.env.BASE_URL}Roboto-Regular.ttf`;
+  let fontFamily: 'Roboto' | 'helvetica' = 'helvetica';
+
+  try {
+    const fontResponse = await fetch(fontUrl);
+    if (fontResponse.ok) {
+      const fontBuffer = await fontResponse.arrayBuffer();
+      const fontBase64 = arrayBufferToBase64(fontBuffer);
+      doc.addFileToVFS('Roboto-Regular.ttf', fontBase64);
+      doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
+      fontFamily = 'Roboto';
+    }
+  } catch {
+    // Ignore font loading errors and continue with default PDF font
+  }
+
+  doc.setFont(fontFamily, 'normal');
 
   const pageWidth = doc.internal.pageSize.width;
   
   // --- Header ---
   doc.setFontSize(22);
   doc.setTextColor(40, 40, 40);
-  doc.text('Коммерческое предложение', pageWidth / 2, 20, { align: 'center' });
+  doc.text(data.title ?? 'Коммерческое предложение', pageWidth / 2, 20, { align: 'center' });
   
   doc.setFontSize(12);
   doc.setTextColor(100, 100, 100);
-  doc.text('Локальный ИИ-агент для 1С:Предприятие', pageWidth / 2, 30, { align: 'center' });
+  doc.text(data.subtitle ?? 'Локальный ИИ-агент для 1С:Предприятие', pageWidth / 2, 30, { align: 'center' });
   
   doc.setFontSize(10);
   doc.text(`Дата: ${format(new Date(), 'd MMMM yyyy', { locale: ru })}`, pageWidth - 20, 40, { align: 'right' });
@@ -99,7 +112,7 @@ export const generateProposal = async (data: ProposalData) => {
     body: tableBody,
     theme: 'grid',
     headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
-    styles: { font: 'Roboto', fontSize: 10, cellPadding: 3 },
+    styles: { font: fontFamily, fontSize: 10, cellPadding: 3 },
     columnStyles: {
       0: { cellWidth: 'auto' },
       1: { cellWidth: 20, halign: 'center' },
@@ -145,5 +158,5 @@ export const generateProposal = async (data: ProposalData) => {
   doc.text('Подпись исполнителя', 20, signY + 5);
 
   // Save the PDF
-  doc.save('commercial_proposal.pdf');
+  doc.save(data.fileName ?? 'commercial_proposal.pdf');
 };
