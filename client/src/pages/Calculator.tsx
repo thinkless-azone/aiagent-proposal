@@ -207,7 +207,7 @@ export default function Calculator() {
                   {formatPrice(
                     ((selectedItems['yadro-g4208p'] ? prices['yadro-g4208p']?.currentPrice : 0) || 0) +
                     ((selectedItems['eltex-mes2300-24'] ? prices['eltex-mes2300-24']?.currentPrice : 0) || 0) +
-                    ((selectedItems['alt-linux'] ? prices['alt-linux']?.currentPrice * 2 : 0) || 0) +
+                    ((selectedItems['alt-linux'] ? prices['alt-linux']?.currentPrice : 0) || 0) +
                     ((selectedItems['postgres-pro'] ? prices['postgres-pro']?.currentPrice * 4 : 0) || 0) +
                     ((selectedItems['alt-virtualization'] ? prices['alt-virtualization']?.currentPrice * 3 : 0) || 0) +
                     ((selectedItems['ml-platform'] ? prices['ml-platform']?.currentPrice : 0) || 0) +
