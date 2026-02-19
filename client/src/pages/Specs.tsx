@@ -16,6 +16,7 @@ import { XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 
 export default function Specs() {
   const { prices, isLive, setIsLive, lastUpdate, formatPrice } = useEquipmentPricing();
@@ -102,6 +103,11 @@ export default function Specs() {
             Детальный состав аппаратного и программного обеспечения для оптимального варианта реализации.
             Все оборудование включено в реестр Минпромторга РФ.
           </p>
+        </div>
+
+        {/* Architecture Diagram */}
+        <div className="mb-12">
+          <ArchitectureDiagram />
         </div>
 
         {/* Total Cost Summary Block */}
