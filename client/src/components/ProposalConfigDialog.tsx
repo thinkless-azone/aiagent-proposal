@@ -112,7 +112,7 @@ export function ProposalConfigDialog() {
                 Базовый вариант
               </Label>
               <p className="text-sm text-muted-foreground">
-                Минимальная конфигурация для пилотного запуска.
+                Базовая конфигурация для пилотного запуска.
               </p>
             </div>
           </div>
@@ -131,7 +131,7 @@ export function ProposalConfigDialog() {
                 Оптимальный вариант
               </Label>
               <p className="text-sm text-muted-foreground">
-                Полная конфигурация с отказоустойчивостью и расширенными возможностями.
+                Оптимальная конфигурация с отказоустойчивостью и расширенными возможностями.
               </p>
             </div>
           </div>
