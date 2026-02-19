@@ -276,7 +276,7 @@ export default function Calculator() {
                           />
                           Сервер Гравитон С2122ИУ
                         </div>
-                        <div className="text-xs text-muted-foreground ml-6">2x Intel Xeon Scalable, 128GB DDR5, 1x NVIDIA A100</div>
+                        <div className="text-xs text-muted-foreground ml-6">2x Intel Xeon Scalable, 128GB DDR5, 1x NVIDIA A40</div>
                       </TableCell>
                       <TableCell><Badge variant="outline">Серверы</Badge></TableCell>
                       <TableCell className="text-right">1</TableCell>

@@ -264,7 +264,7 @@ export default function Specs() {
                         <span className="font-medium">128 GB DDR5</span>
 
                         <span className="text-muted-foreground">GPU:</span>
-                        <span className="font-medium">1x NVIDIA A100</span>
+                        <span className="font-medium">1x NVIDIA A40</span>
                         
                         <span className="text-muted-foreground">Диски (ОС):</span>
                         <span className="font-medium">2x 480GB SSD SATA (RAID 1)</span>
@@ -287,7 +287,7 @@ export default function Specs() {
                         <ul className="list-disc list-inside space-y-1">
                           <li>Оптимальное соотношение цена/производительность</li>
                           <li>Включен в реестр Минпромторга РФ</li>
-                          <li>Поддержка базовых задач инференса ИИ (NVIDIA A100)</li>
+                          <li>Поддержка базовых задач инференса ИИ (NVIDIA A40)</li>
                         </ul>
                       </div>
                     </div>
@@ -358,7 +358,7 @@ export default function Specs() {
                         <span className="font-medium">128 GB DDR5</span>
                         
                         <span className="text-muted-foreground">GPU:</span>
-                        <span className="font-medium">1x NVIDIA A100</span>
+                        <span className="font-medium">1x NVIDIA A40</span>
                         
                         <span className="text-muted-foreground">Диски (ОС):</span>
                         <span className="font-medium">2x 480GB SSD SATA (RAID 1)</span>

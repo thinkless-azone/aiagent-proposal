@@ -53,7 +53,7 @@ export default function Variants() {
             </div>
             <div>
               <div className="font-bold text-sm uppercase">Серверное оборудование</div>
-              <div className="text-sm text-muted-foreground">1x Сервер Гравитон Н22И (Intel Xeon, NVIDIA A100)</div>
+              <div className="text-sm text-muted-foreground">1x Сервер Гравитон Н22И (Intel Xeon, NVIDIA A40)</div>
             </div>
           </div>
           
