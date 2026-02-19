@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calculator, TrendingUp, DollarSign, Clock, AlertTriangle } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calculator, DollarSign, Clock, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import { generateProposal } from "@/lib/generateProposal";
 
@@ -27,6 +26,7 @@ export function ROICalculator() {
   const BASIC_COST = 7285000; // ~7.3M
   const OPTIMAL_COST = 21590000; // ~21.6M
   const [selectedVariant, setSelectedVariant] = useState<"basic" | "optimal">("optimal");
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const calculateROI = () => {
     // 1. Labor Savings: Automated processing reduces manual verification time
@@ -43,19 +43,9 @@ export function ROICalculator() {
 
     // 3. Fraud Prevention: Preventing financial losses from fraud
     // Probabilistic model: Risk % * Avg Loss
-    const fraudLosses = (fraudRisk / 100) * avgFraudLoss * 12; // Monthly risk annualized? No, let's treat risk as annual probability of incident per 1000 docs or similar?
-    // Let's simplify: Fraud Risk is % of total transaction volume that is at risk, or % chance of a major incident per year.
-    // Better: Estimated annual loss from fraud/inefficiency without AI
-    const estimatedFraudLoss = (docVolume * 12) * (fraudRisk / 100) * 10000; // Arbitrary multiplier for transaction value?
-    // Let's use the user input directly: "Estimated Annual Fraud Loss" is better.
-    // But we have avgFraudLoss per incident. Let's say fraudRisk is % of docs that are problematic.
     const annualFraudIncidents = (docVolume * 12) * (fraudRisk / 100);
-    const fraudSavings = annualFraudIncidents * avgErrorCost * 2; // Conservative estimate, usually fraud is much more expensive than simple errors.
-    
-    // Let's refine the calculation logic to be more defensible
-    // Savings = (Manual Cost - AI Cost) + (Error Cost Reduction) + (Fraud Prevention)
-    
-    const totalAnnualSavings = laborSavings + errorSavings + (annualFraudIncidents * avgFraudLoss * 0.1); // Assuming 10% of risky docs result in actual loss
+
+    const totalAnnualSavings = laborSavings + errorSavings + (annualFraudIncidents * avgFraudLoss * 0.1);
 
     setAnnualSavings(Math.round(totalAnnualSavings));
 
@@ -85,20 +75,27 @@ export function ROICalculator() {
   const handleDownloadRoiReport = async () => {
     const investment = selectedVariant === "basic" ? BASIC_COST : OPTIMAL_COST;
 
-    await generateProposal({
-      variant: selectedVariant,
-      title: 'Отчет ROI',
-      subtitle: 'Экономическая эффективность внедрения ИИ-агента',
-      fileName: `roi_report_${selectedVariant}.pdf`,
-      totalPrice: annualSavings,
-      items: [
-        { id: 'monthly-doc-volume', name: 'Объем документов в месяц', qty: docVolume, price: 1, category: 'implementation' },
-        { id: 'annual-savings', name: 'Прогнозируемая ежегодная экономия', qty: 1, price: annualSavings, category: 'implementation' },
-        { id: 'investment', name: 'Инвестиции во внедрение', qty: 1, price: investment, category: 'implementation' },
-        { id: 'payback', name: `Срок окупаемости: ${paybackPeriod} мес.`, qty: 1, price: 0, category: 'implementation' },
-        { id: 'roi-3y', name: `ROI за 3 года: ${roi}%`, qty: 1, price: 0, category: 'implementation' },
-      ]
-    });
+    setIsDownloading(true);
+    try {
+      await generateProposal({
+        variant: selectedVariant,
+        title: 'Отчет ROI',
+        subtitle: 'Экономическая эффективность внедрения ИИ-агента',
+        fileName: `roi_report_${selectedVariant}.pdf`,
+        totalPrice: annualSavings,
+        items: [
+          { id: 'monthly-doc-volume', name: 'Объем документов (в месяц)', qty: 1, price: docVolume, category: 'implementation' },
+          { id: 'avg-doc-cost', name: 'Стоимость обработки 1 документа', qty: 1, price: avgDocCost, category: 'implementation' },
+          { id: 'error-rate', name: 'Вероятность ошибок/рисков (%)', qty: 1, price: errorRate, category: 'implementation' },
+          { id: 'annual-savings', name: 'Прогнозируемая ежегодная экономия', qty: 1, price: annualSavings, category: 'implementation' },
+          { id: 'investment', name: 'Инвестиции во внедрение', qty: 1, price: investment, category: 'implementation' },
+          { id: 'payback', name: `Срок окупаемости (мес.)`, qty: 1, price: paybackPeriod, category: 'implementation' },
+          { id: 'roi-3y', name: `ROI за 3 года (%)`, qty: 1, price: roi, category: 'implementation' },
+        ]
+      });
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -225,8 +222,8 @@ export function ROICalculator() {
               </div>
             </div>
             
-            <Button className="w-full font-bold" size="lg" onClick={handleDownloadRoiReport}>
-              Скачать детальный отчет (PDF)
+            <Button className="w-full font-bold" size="lg" onClick={handleDownloadRoiReport} disabled={isDownloading}>
+              {isDownloading ? "Формируем PDF..." : "Скачать детальный отчет (PDF)"}
             </Button>
           </div>
         </div>
