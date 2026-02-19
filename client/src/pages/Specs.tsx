@@ -256,6 +256,9 @@ export default function Specs() {
                         
                         <span className="text-muted-foreground">ОЗУ:</span>
                         <span className="font-medium">128 GB DDR5</span>
+
+                        <span className="text-muted-foreground">GPU:</span>
+                        <span className="font-medium">1x NVIDIA A100</span>
                         
                         <span className="text-muted-foreground">Диски (ОС):</span>
                         <span className="font-medium">2x 480GB SSD SATA (RAID 1)</span>

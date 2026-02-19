@@ -57,7 +57,7 @@ export default function Calculator() {
 
     if (variant === 'basic') {
       const basicItems = [
-        { id: 'graviton-h22i', name: 'Сервер Гравитон С2122ИУ', qty: 1, category: 'hardware' },
+        { id: 'graviton-h22i', name: 'Сервер Гравитон С2122ИУ (2x Intel Xeon, 128GB, NVIDIA A100)', qty: 1, category: 'hardware' },
         { id: 'eltex-mes2300-24', name: 'Коммутатор Eltex MES2300-24', qty: 1, category: 'hardware' },
         { id: 'alt-linux', name: 'ОС Альт СП / 4305 / Лицензия на право использования Альт СП Сервер релиз 10', qty: 1, category: 'software' },
         { id: 'postgres-pro', name: 'Лицензия СУБД Postgres Pro Certified на 1 ядро x86-64', qty: 4, category: 'software' },
@@ -276,7 +276,7 @@ export default function Calculator() {
                           />
                           Сервер Гравитон С2122ИУ
                         </div>
-                        <div className="text-xs text-muted-foreground ml-6">2x Intel Xeon Scalable, 128GB DDR5</div>
+                        <div className="text-xs text-muted-foreground ml-6">2x Intel Xeon Scalable, 128GB DDR5, 1x NVIDIA A100</div>
                       </TableCell>
                       <TableCell><Badge variant="outline">Серверы</Badge></TableCell>
                       <TableCell className="text-right">1</TableCell>
