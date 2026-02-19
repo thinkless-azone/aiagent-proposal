@@ -9,10 +9,14 @@ interface ProposalItem {
   category: 'hardware' | 'software' | 'implementation';
 }
 
-interface ProposalData {
-  variant: 'basic' | 'optimal';
+interface VariantData {
+  name: string;
   items: ProposalItem[];
   totalPrice: number;
+}
+
+interface ProposalData {
+  variants: VariantData[];
 }
 
 const formatCurrency = (value: number) => {
@@ -24,9 +28,8 @@ const formatCurrency = (value: number) => {
 };
 
 export const generateDocxProposal = async (data: ProposalData) => {
-  // Function to generate table rows dynamically based on input data
-  const generateTableRows = (items: ProposalItem[]) => {
-    return items.map((item) => 
+  const generateTable = (items: ProposalItem[], totalPrice: number) => {
+    const rows = items.map((item) => 
       new TableRow({
         children: [
           new TableCell({ children: [new Paragraph(item.name)] }),
@@ -36,46 +39,58 @@ export const generateDocxProposal = async (data: ProposalData) => {
         ],
       })
     );
+
+    return new Table({
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Наименование", bold: true })] })],
+              width: { size: 50, type: WidthType.PERCENTAGE },
+              shading: { fill: "E0E0E0" },
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Кол-во", bold: true })], alignment: AlignmentType.CENTER })],
+              width: { size: 10, type: WidthType.PERCENTAGE },
+              shading: { fill: "E0E0E0" },
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Цена за ед.", bold: true })], alignment: AlignmentType.RIGHT })],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+              shading: { fill: "E0E0E0" },
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Сумма", bold: true })], alignment: AlignmentType.RIGHT })],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+              shading: { fill: "E0E0E0" },
+            }),
+          ],
+        }),
+        ...rows,
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "ИТОГО:", bold: true })], alignment: AlignmentType.RIGHT })],
+              columnSpan: 3,
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: formatCurrency(totalPrice), bold: true })], alignment: AlignmentType.RIGHT })],
+            }),
+          ],
+        }),
+      ],
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    });
   };
 
-  const tableRows = [
-    new TableRow({
-      children: [
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: "Наименование", bold: true })] })],
-          width: { size: 50, type: WidthType.PERCENTAGE },
-          shading: { fill: "E0E0E0" },
-        }),
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: "Кол-во", bold: true })], alignment: AlignmentType.CENTER })],
-          width: { size: 10, type: WidthType.PERCENTAGE },
-          shading: { fill: "E0E0E0" },
-        }),
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: "Цена за ед.", bold: true })], alignment: AlignmentType.RIGHT })],
-          width: { size: 20, type: WidthType.PERCENTAGE },
-          shading: { fill: "E0E0E0" },
-        }),
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: "Сумма", bold: true })], alignment: AlignmentType.RIGHT })],
-          width: { size: 20, type: WidthType.PERCENTAGE },
-          shading: { fill: "E0E0E0" },
-        }),
-      ],
+  const variantSections = data.variants.map((variant) => [
+    new Paragraph({
+      text: `Вариант: ${variant.name}`,
+      heading: HeadingLevel.HEADING_2,
+      spacing: { before: 400, after: 200 },
     }),
-    ...generateTableRows(data.items),
-    new TableRow({
-      children: [
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: "ИТОГО:", bold: true })], alignment: AlignmentType.RIGHT })],
-          columnSpan: 3,
-        }),
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: formatCurrency(data.totalPrice), bold: true })], alignment: AlignmentType.RIGHT })],
-        }),
-      ],
-    }),
-  ];
+    generateTable(variant.items, variant.totalPrice),
+  ]).flat();
 
   const doc = new Document({
     sections: [
@@ -109,15 +124,7 @@ export const generateDocxProposal = async (data: ProposalData) => {
             alignment: AlignmentType.JUSTIFIED,
             spacing: { after: 400 },
           }),
-          new Paragraph({
-            text: `Конфигурация решения: ${data.variant === 'basic' ? 'Базовый вариант' : 'Оптимальный вариант'}`,
-            heading: HeadingLevel.HEADING_3,
-            spacing: { after: 200 },
-          }),
-          new Table({
-            rows: tableRows,
-            width: { size: 100, type: WidthType.PERCENTAGE },
-          }),
+          ...variantSections,
           new Paragraph({
             text: "Условия реализации",
             heading: HeadingLevel.HEADING_3,
@@ -138,5 +145,5 @@ export const generateDocxProposal = async (data: ProposalData) => {
   });
 
   const blob = await Packer.toBlob(doc);
-  saveAs(blob, `Commercial_Proposal_${data.variant}_${new Date().toISOString().split('T')[0]}.docx`);
+  saveAs(blob, `Commercial_Proposal_${new Date().toISOString().split('T')[0]}.docx`);
 };

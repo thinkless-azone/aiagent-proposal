@@ -189,7 +189,7 @@ export default function Calculator() {
             </CardHeader>
             <CardContent>
               <div className="text-sm text-muted-foreground mb-4">
-                Минимальная конфигурация для пилотного запуска.
+                Базовая конфигурация для пилотного запуска.
               </div>
               <Button variant="outline" className="w-full font-bold" onClick={() => handleDownloadProposal('basic')} disabled={isGeneratingPdf !== null}>
                 <FileText className="w-4 h-4 mr-2" />
