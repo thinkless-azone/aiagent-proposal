@@ -343,25 +343,25 @@ export default function Specs() {
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-2 text-sm">
                         <span className="text-muted-foreground">Процессор:</span>
-                        <span className="font-medium">2x Intel Xeon Gold 6526Y (16 ядер, 2.8 ГГц)</span>
+                        <span className="font-medium">2x Intel Xeon Scalable (LGA 4677)</span>
                         
                         <span className="text-muted-foreground">ОЗУ:</span>
-                        <span className="font-medium">512 ГБ DDR5 ECC Reg</span>
+                        <span className="font-medium">128 GB DDR5</span>
                         
                         <span className="text-muted-foreground">GPU:</span>
-                        <span className="font-medium">1x NVIDIA H100 80GB</span>
+                        <span className="font-medium">1x NVIDIA A100</span>
                         
                         <span className="text-muted-foreground">Диски (ОС):</span>
                         <span className="font-medium">2x 480GB SSD SATA (RAID 1)</span>
                         
                         <span className="text-muted-foreground">Диски (Данные):</span>
-                        <span className="font-medium">4x 3.84TB SSD NVMe U.2</span>
+                        <span className="font-medium">4x 1.92TB SSD SATA</span>
                         
                         <span className="text-muted-foreground">Сеть:</span>
-                        <span className="font-medium">4x 10GbE SFP+</span>
+                        <span className="font-medium">2x 10GbE SFP+</span>
                         
                         <span className="text-muted-foreground">Питание:</span>
-                        <span className="font-medium">2x 1600W (1+1 Redundant)</span>
+                        <span className="font-medium">2x 800W (1+1 Redundant)</span>
                         
                         <span className="text-muted-foreground">Форм-фактор:</span>
                         <span className="font-medium">2U Rackmount</span>
