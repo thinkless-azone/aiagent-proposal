@@ -45,16 +45,29 @@ export const generateProposal = async (data: ProposalData) => {
   const doc = new jsPDF();
 
   // Load custom font (fallback to default font when unavailable)
-  const fontUrl = `${import.meta.env.BASE_URL}Roboto-Regular.ttf`;
+  const regularFontUrl = `${import.meta.env.BASE_URL}Roboto-Regular.ttf`;
+  const boldFontUrl = `${import.meta.env.BASE_URL}Roboto-Bold.ttf`;
   let fontFamily: 'Roboto' | 'helvetica' = 'helvetica';
 
   try {
-    const fontResponse = await fetch(fontUrl);
-    if (fontResponse.ok) {
-      const fontBuffer = await fontResponse.arrayBuffer();
-      const fontBase64 = arrayBufferToBase64(fontBuffer);
-      doc.addFileToVFS('Roboto-Regular.ttf', fontBase64);
+    const regularResponse = await fetch(regularFontUrl);
+    if (regularResponse.ok) {
+      const regularBuffer = await regularResponse.arrayBuffer();
+      const regularBase64 = arrayBufferToBase64(regularBuffer);
+      doc.addFileToVFS('Roboto-Regular.ttf', regularBase64);
       doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
+
+      // Register bold style explicitly so Cyrillic text in bold cells does not fallback to core fonts.
+      const boldResponse = await fetch(boldFontUrl);
+      if (boldResponse.ok) {
+        const boldBuffer = await boldResponse.arrayBuffer();
+        const boldBase64 = arrayBufferToBase64(boldBuffer);
+        doc.addFileToVFS('Roboto-Bold.ttf', boldBase64);
+        doc.addFont('Roboto-Bold.ttf', 'Roboto', 'bold');
+      } else {
+        doc.addFont('Roboto-Regular.ttf', 'Roboto', 'bold');
+      }
+
       fontFamily = 'Roboto';
     }
   } catch {
@@ -111,7 +124,7 @@ export const generateProposal = async (data: ProposalData) => {
     head: [['Наименование', 'Кол-во', 'Цена за ед.', 'Сумма']],
     body: tableBody,
     theme: 'grid',
-    headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+    headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold', font: fontFamily },
     styles: { font: fontFamily, fontSize: 10, cellPadding: 3 },
     columnStyles: {
       0: { cellWidth: 'auto' },
